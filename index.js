@@ -8,6 +8,7 @@ app.use(express.json());
 
 const countriesUrl = "https://restcountries.com/v3.1";
 
+// My site: Home Page
 app.get("/", (req, res) => {
   try {
     return res.status(200).json({ message: "Home page" });
@@ -15,11 +16,11 @@ app.get("/", (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
-// Countries: all
+// Countries: all = Home page
 app.get("/countries", async (req, res) => {
   try {
     const { data } = await axios.get(`${countriesUrl}/all`);
-    return res.status(200).json({ data });
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -29,7 +30,19 @@ app.get("/country/:name", async (req, res) => {
   try {
     const { name } = req.params;
     const { data } = await axios.get(`${countriesUrl}/name/${name}`);
-    return res.status(200).json({ data });
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+// Countries: queries: name
+app.get("/country", async (req, res) => {
+  console.log(req.query);
+  try {
+    const { name } = req.query;
+    const { data } = await axios.get(`${countriesUrl}/name/${name}`);
+    return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
