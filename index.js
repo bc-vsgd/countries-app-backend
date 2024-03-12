@@ -20,6 +20,7 @@ app.get("/", (req, res) => {
 app.get("/countries", async (req, res) => {
   try {
     const { data } = await axios.get(`${countriesUrl}/all`);
+
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -38,10 +39,37 @@ app.get("/country/:name", async (req, res) => {
 
 // Countries: queries: name
 app.get("/country", async (req, res) => {
-  console.log(req.query);
+  // console.log(req.query);
   try {
     const { name } = req.query;
     const { data } = await axios.get(`${countriesUrl}/name/${name}`);
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+// Countries: sort
+app.get("/countries/sort", async (req, res) => {
+  try {
+    const { name } = req.query;
+    const { data } = await axios.get(`${countriesUrl}/all`);
+
+    if (name === "asc") {
+      data.sort((a, b) => {
+        return a.name.common
+          .toLowerCase()
+          .localeCompare(b.name.common.toLowerCase());
+      });
+    }
+
+    if (name === "desc") {
+      data.sort((a, b) => {
+        return b.name.common
+          .toLowerCase()
+          .localeCompare(a.name.common.toLowerCase());
+      });
+    }
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
