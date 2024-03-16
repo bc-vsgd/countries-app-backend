@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-console.log("COUTRIES_URL: ", process.env.COUTRIES_URL);
+// console.log("COUTRIES_URL: ", process.env.COUTRIES_URL);
 const countriesUrl = process.env.COUTRIES_URL;
 
 // My site: Home Page
